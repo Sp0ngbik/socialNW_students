@@ -1,0 +1,2 @@
+export const ADD_POST = 'ADD_POST'
+export const ON_CHANGE_POST_VALUE = 'ON_CHANGE_POST_VALUE'

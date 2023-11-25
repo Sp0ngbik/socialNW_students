@@ -1,32 +1,48 @@
-import React, {FC, RefObject, useRef} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {data, T_PostsData} from "../../../data/data";
+import {T_PostsData} from "../../../data/data";
 
-
-const MyPosts: FC<{ postData: T_PostsData[], addPost: (title: string) => void }> = (props) => {
-    const postRef: RefObject<HTMLTextAreaElement> = useRef(null)
-    const textAreaHandler = () => {
-        postRef.current && props.addPost(postRef.current.value)
+interface T_MyPosts {
+    profilePage: {
+        newValueForPost: string,
+        postsData: T_PostsData[]
     }
-    return (
-        <div>
-            My posts
+    textAreaHandler: () => void
+    onChangeFunc: (e: ChangeEvent<HTMLTextAreaElement>) => void
+}
+
+interface I_Props {
+    textValue: string
+}
+
+
+class MyPosts extends React.Component<T_MyPosts, I_Props> {
+
+
+    render() {
+        const {profilePage, textAreaHandler, onChangeFunc} = this.props
+
+        return (
             <div>
-                <textarea ref={postRef}></textarea>
-                <button onClick={() => {
-                    console.log(data)
-                    textAreaHandler()
-                }}>Add post
-                </button>
+                My posts
+                <div>
+                    <textarea value={profilePage.newValueForPost}
+                              onChange={onChangeFunc}></textarea>
+                    <button onClick={
+                        textAreaHandler
+                    }>Add post
+                    </button>
+                </div>
+                <div className={s.posts}>
+                    {profilePage.postsData.length ?
+                        profilePage.postsData.map(post => <Post key={post.id} message={post.message}
+                                                                likesCount={post.likesCount}/>)
+                        : <div>Posts empty</div>}
+                </div>
             </div>
-            <div className={s.posts}>
-                {props.postData.length ?
-                    props.postData.map(post => <Post key={post.id} message={post.message} likesCount={post.likesCount}/>)
-                    : <div>Posts empty</div>}
-            </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default MyPosts;
