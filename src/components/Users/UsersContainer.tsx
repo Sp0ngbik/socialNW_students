@@ -2,21 +2,20 @@ import {connect} from "react-redux";
 import Users from "./Users";
 import {RootState} from "../../data/redux/store";
 import {
-    changeFollowStatusAC, setIsFetchingAC,
-    setNewActivePageAC,
-    setUsersFromServerAC,
+    followTC,
+    getUsersTC,
     T_UserBody,
+    unfollowTC,
 } from "../../data/reducers/usersReducer";
 import React from "react";
-import {Users_api} from "../../api/users_api";
+import {compose} from "redux";
 
 export type T_UserContainer = {
     users: T_UserBody[],
-    activePage: number,
-    changeFollowStatusAC: (userId: number, follow: boolean) => void
-    setUsersFromServerAC: (usersData: T_UserBody[], totalCount: number, error: string | null) => void
-    setNewActivePageAC: (pageNumber: number) => void
-    setIsFetchingAC: (status: boolean) => void
+    followTC: (userId: number) => void
+    unfollowTC: (userId: number) => void
+    getUsersTC: (pageNumber: number) => void
+    activePage: number
     pageSize: number
     totalCount: number
     isFetching: boolean
@@ -24,23 +23,12 @@ export type T_UserContainer = {
 
 class SuperUserContainer extends React.Component <T_UserContainer> {
     componentDidMount() {
-        Users_api.getUser(this.props.activePage).then(res => {
-            const data = res.data
-            this.props.setUsersFromServerAC(data.items, data.totalCount, data.error)
-        }).finally(() => {
-            this.props.setIsFetchingAC(false)
-        })
+
+        this.props.getUsersTC(this.props.activePage)
     }
 
     onPageChangeHandler(pageNumber: number) {
-        this.props.setNewActivePageAC(pageNumber);
-        this.props.setIsFetchingAC(true)
-        Users_api.getUser(pageNumber).then(res => {
-            const data = res.data
-            this.props.setUsersFromServerAC(data.items, data.totalCount, data.error)
-        }).finally(() => {
-            this.props.setIsFetchingAC(false)
-        })
+        this.props.getUsersTC(pageNumber)
     }
 
     render() {
@@ -60,10 +48,12 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatch = {
-    changeFollowStatusAC,
-    setUsersFromServerAC,
-    setNewActivePageAC,
-    setIsFetchingAC
+    followTC,
+    unfollowTC,
+    getUsersTC,
 }
 
-export const UsersContainer = connect(mapStateToProps, mapDispatch)(SuperUserContainer)
+export default compose<React.ComponentType>(connect(mapStateToProps, mapDispatch))(SuperUserContainer)
+
+
+

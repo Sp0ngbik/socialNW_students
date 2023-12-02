@@ -1,9 +1,9 @@
 import React from "react";
 import {T_UserContainer} from "./UsersContainer";
-import preloader from '../../assets/images/Image20231125132435.gif'
 import style from './user.module.css'
 import defaultPhoto from '../../assets/images/Image20231118135624.jpg'
 import {NavLink} from "react-router-dom";
+import Preloader from "../../helpers/Preloader/Preloader";
 
 type T_UsersProps = {
     onPageChangeHandler: (pageNumber: number) => void
@@ -25,7 +25,7 @@ class Users extends React.Component<T_UserContainer & T_UsersProps, T_StateUsers
     }
 
     render() {
-        const {users, changeFollowStatusAC, onPageChangeHandler} = this.props
+        const {users, followTC, unfollowTC, onPageChangeHandler} = this.props
         const pages: number[] = []
         // const pageCounter = Math.ceil(totalCount / pageSize)
 
@@ -46,8 +46,7 @@ class Users extends React.Component<T_UserContainer & T_UsersProps, T_StateUsers
                 }))
             }
         }
-        return this.props.isFetching ? <img alt={'preloader not found'}
-                                            src={preloader}/> :
+        return this.props.isFetching ? <Preloader/> :
             <div>
                 <div>
                     <button onClick={() => nextPagesUsers(false)}>{'<'}</button>
@@ -64,10 +63,10 @@ class Users extends React.Component<T_UserContainer & T_UsersProps, T_StateUsers
                             <div>
                                 <img src={u.photos.small || defaultPhoto} alt={'userAva not found'}/>
                             </div>
-                            {u.followed ?
-                                <button onClick={() => changeFollowStatusAC(u.id, !u.followed)}>Follow</button> :
-                                <button onClick={() => changeFollowStatusAC(u.id, !u.followed)}>Unfollow</button>}
                         </NavLink>
+                        {!u.followed ?
+                            <button onClick={() => followTC(u.id)}>Follow</button> :
+                            <button onClick={() => unfollowTC(u.id)}>Unfollow</button>}
                     </div>
                 ))}
             </div>

@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Header from "./components/Header/Header";
 import RoadMap from "./components/Roadmap/RoadMap";
 import {NavbarContainer} from "./components/Navbar/NavbarConainer";
+import HeaderContainer from "./components/Header/HeaderContainer";
 
 class App extends React.Component {
     render() {
         return <div className='app-wrapper'>
-            <Header/>
+            <HeaderContainer/>
             <NavbarContainer/>
             <div className='app-wrapper-content'>
                 <RoadMap/>

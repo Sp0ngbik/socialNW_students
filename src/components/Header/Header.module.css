@@ -7,3 +7,12 @@
     width: 20px;
 }
 
+.loginBlock {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.loginBlock span {
+    font-size: 24px;
+    color: #fff;
+}

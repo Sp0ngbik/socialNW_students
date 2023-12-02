@@ -2,20 +2,22 @@ import React from "react";
 import {Profile_api} from "../../../api/profiile_api";
 import {ProfileInfo} from "./ProfileInfo";
 import {connect} from "react-redux";
-import {AppDispatch, RootState} from "../../../data/redux/store";
+import {RootState} from "../../../data/redux/store";
 import {setUserInfoAC, T_ProfileInfo} from "../../../data/reducers/profilePageReducer";
 import {withRouterHOC} from "../../../hoc/withRouter";
+import {withRedirectHOC} from "../../../hoc/withAuthRedirectHOC";
+import {compose} from "redux";
 
 export type T_ProfileContainer = {
     profileInfo: T_ProfileInfo | null,
-    setUserInfo: (userInfo: T_ProfileInfo) => void
+    setUserInfoAC: (userInfo: T_ProfileInfo) => void
     id?: string
 }
 
 class ProfileInfoContainer extends React.Component <T_ProfileContainer> {
     componentDidMount() {
         this.props.id &&
-        Profile_api.getUserInfo(Number(this.props.id)).then(res => this.props.setUserInfo(res.data))
+        Profile_api.getUserInfo(Number(this.props.id)).then(res => this.props.setUserInfoAC(res.data))
     }
 
     render() {
@@ -30,12 +32,13 @@ const mapStateToProps = (state: RootState) => {
     }
 }
 
-const mapDispatchToProps = (dispatch: AppDispatch) => {
-    return {
-        setUserInfo: (userInfo: T_ProfileInfo) => dispatch(setUserInfoAC(userInfo))
-    }
-}
+const mapDispatchToProps =
+    {setUserInfoAC}
 
-const WithRouter = withRouterHOC(ProfileInfoContainer)
-
-export default connect(mapStateToProps, mapDispatchToProps)(WithRouter)
+export default compose<React.ComponentType>
+(
+    withRouterHOC,
+    withRedirectHOC,
+    connect(mapStateToProps, mapDispatchToProps)
+)
+(ProfileInfoContainer)
