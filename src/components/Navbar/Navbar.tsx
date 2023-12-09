@@ -5,16 +5,18 @@ import {T_DialogItems} from "../../data/data";
 
 interface I_NavBarProps {
     dialogItems: T_DialogItems[]
+    userId: number | null
 }
 
 
 class Navbar extends React.Component<I_NavBarProps> {
     render() {
-        const {dialogItems} = this.props
+        const {dialogItems, userId = 2} = this.props
         let firstUserMessage = `/message/${dialogItems[0].id}`
         return <nav className={s.nav}>
             <div>
-                <NavLink className={({isActive}) => isActive ? s.item_active : s.item} to={'/profile/2'}>Profile</NavLink>
+                <NavLink className={({isActive}) => isActive ? s.item_active : s.item}
+                         to={`/profile/${userId}`}>Profile</NavLink>
             </div>
             <div>
                 <NavLink

@@ -2,10 +2,11 @@ import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
 import {RootState} from "../../data/redux/store";
-import { T_DataMe} from "../../data/reducers/auth_reducer";
+import {setUserLogoutTC, T_DataMe} from "../../data/reducers/auth_reducer";
 
 export type T_HeaderContainer = {
     authState: T_DataMe
+    setUserLogoutTC: () => void
 }
 
 class HeaderContainer extends React.Component<T_HeaderContainer> {
@@ -23,4 +24,4 @@ const mapStateToProps = (state: RootState) => {
 }
 
 
-export default connect(mapStateToProps)(HeaderContainer)
+export default connect(mapStateToProps, {setUserLogoutTC})(HeaderContainer)

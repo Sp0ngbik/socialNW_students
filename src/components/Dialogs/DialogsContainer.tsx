@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {AppDispatch, RootState} from "../../data/redux/store";
 import {addNewMessageAC, changeNewMessageAC} from "../../data/reducers/dialogsReducer";
 import {T_DialogsInfo} from "../../data/data";
+import {compose} from "redux";
+import {withRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 
 
 type T_MapDispatchToProps = {
@@ -34,7 +36,11 @@ const mapDispatchToProps = (dispatch: AppDispatch): T_MapDispatchToProps => {
 }
 
 
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
+
+// export default DialogsContainer;
 
 
-export default DialogsContainer;
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, mapDispatchToProps),
+    withRedirectHOC
+)(Dialogs)
