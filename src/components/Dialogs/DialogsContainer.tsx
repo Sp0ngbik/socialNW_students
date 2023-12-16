@@ -1,15 +1,14 @@
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {AppDispatch, RootState} from "../../data/redux/store";
-import {addNewMessageAC, changeNewMessageAC} from "../../data/reducers/dialogsReducer";
+import {addNewMessageAC} from "../../data/reducers/dialogsReducer";
 import {T_DialogsInfo} from "../../data/data";
 import {compose} from "redux";
 import {withRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 
 
 type T_MapDispatchToProps = {
-    changeNewMessage: (message: string) => void,
-    addMessage: () => void
+    addMessage: (title:string) => void
 }
 
 type T_MapStateToProps = {
@@ -26,19 +25,11 @@ const mapStateToProps = (state: RootState): T_MapStateToProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): T_MapDispatchToProps => {
     return {
-        changeNewMessage(newMessage: string) {
-            dispatch(changeNewMessageAC(newMessage))
-        },
-        addMessage() {
-            dispatch(addNewMessageAC())
+        addMessage(title:string) {
+            dispatch(addNewMessageAC(title))
         }
     }
 }
-
-
-
-// export default DialogsContainer;
-
 
 export default compose<React.ComponentType>(
     connect(mapStateToProps, mapDispatchToProps),

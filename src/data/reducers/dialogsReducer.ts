@@ -24,22 +24,18 @@ const initialState: T_DialogsInfo = {
         {id: '4', name: 'Oleg'},
         {id: '5', name: 'Ivan'}
     ],
-    newMessageTitle: '',
 }
 
-type T_ChangeNewMessage = ReturnType<typeof changeNewMessageAC>
 type T_AddNewMessage = ReturnType<typeof addNewMessageAC>
-type T_MainDialogs = T_ChangeNewMessage | T_AddNewMessage
+type T_MainDialogs =T_AddNewMessage
 
 export const dialogsReducer = (state = initialState, action: T_MainDialogs) => {
     switch (action.type) {
-        case "CHANGE_MESSAGE":
-            return {...state, newMessageTitle: action.message}
         case "ADD_NEW_MESSAGE":
             const newMessage = {
                 id: crypto.randomUUID(),
                 userId: '1',
-                messages: state.newMessageTitle
+                messages: action.message
             }
             return {
                 ...state, messageData: [...state.messageData, newMessage], newMessageTitle: ''
@@ -49,9 +45,7 @@ export const dialogsReducer = (state = initialState, action: T_MainDialogs) => {
     }
 }
 
-export const changeNewMessageAC = (message: string) => {
-    return {type: 'CHANGE_MESSAGE', message} as const
-}
-export const addNewMessageAC = () => {
-    return {type: "ADD_NEW_MESSAGE"} as const
+
+export const addNewMessageAC = (message: string) => {
+    return {type: "ADD_NEW_MESSAGE",message} as const
 }

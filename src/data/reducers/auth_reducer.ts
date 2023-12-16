@@ -1,6 +1,8 @@
 import {AppDispatch, AppThunk} from "../redux/store";
 import {Auth_api, T_LoginData} from "../../api/auth_api";
 import {initializedSuccessAC} from "./app_reducer";
+import {networkError} from "../../utils/errorsHandler/networkError";
+import {localError} from "../../utils/errorsHandler/localError";
 
 
 export type T_DataMe = {
@@ -51,17 +53,30 @@ const setLogOutUserAC = () => {
 }
 
 export const getUserAuthTC = (): AppThunk => async (dispatch: AppDispatch) => {
-    const response = await Auth_api.authUser()
-    if (response.data.resultCode === 0) {
-        dispatch(setAuthUserDataAC(response.data))
+    try {
+
+        const response = await Auth_api.authUser()
+        if (response.data.resultCode === 0) {
+            dispatch(setAuthUserDataAC(response.data))
+        } else {
+            localError(dispatch, response)
+        }
+    } catch (e) {
+        networkError(dispatch, e)
     }
-        dispatch(initializedSuccessAC())
+    dispatch(initializedSuccessAC())
 }
 
 export const setUserLoginTC = (data: T_LoginData): AppThunk => async (dispatch) => {
-    const response = await Auth_api.loginUser(data)
-    if (response.data.resultCode === 0) {
-        dispatch(getUserAuthTC())
+    try {
+        const response = await Auth_api.loginUser(data)
+        if (response.data.resultCode === 0) {
+            dispatch(getUserAuthTC())
+        } else {
+            localError(dispatch, response)
+        }
+    } catch (e) {
+        networkError(dispatch, e)
     }
 }
 

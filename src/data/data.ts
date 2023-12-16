@@ -26,7 +26,6 @@ export type T_PostsData = {
     message: string, likesCount: string, id: string
 }
 export type T_DialogsInfo = {
-    newMessageTitle: string,
     messageData: T_MessageData[],
     dialogItems: T_DialogItems[]
 }

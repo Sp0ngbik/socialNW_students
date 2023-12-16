@@ -1,48 +1,54 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {T_PostsData} from "../../../data/data";
+import {useFormik} from "formik";
 
 interface T_MyPosts {
     profilePage: {
-        newValueForPost: string,
         postsData: T_PostsData[]
     }
-    textAreaHandler: () => void
-    onChangeFunc: (e: ChangeEvent<HTMLTextAreaElement>) => void
-}
-
-interface I_Props {
-    textValue: string
+    textAreaHandler: (title: string) => void
 }
 
 
-class MyPosts extends React.Component<T_MyPosts, I_Props> {
+function MyPosts(props: T_MyPosts) {
+    const {profilePage, textAreaHandler} = props
 
-
-    render() {
-        const {profilePage, textAreaHandler, onChangeFunc} = this.props
-
-        return (
+    const postsFormik = useFormik({
+        initialValues: {
+            postTitle: ''
+        },
+        validate: (values) => {
+            if (!values.postTitle) {
+                return {postTitle: 'Required'}
+            }
+        },
+        onSubmit: (values) => {
+            textAreaHandler(values.postTitle)
+        }
+    })
+    return (
+        <div>
+            My posts
             <div>
-                My posts
-                <div>
-                    <textarea value={profilePage.newValueForPost}
-                              onChange={onChangeFunc}></textarea>
-                    <button onClick={
-                        textAreaHandler
-                    }>Add post
+                <form onSubmit={postsFormik.handleSubmit}>
+                    {postsFormik.errors.postTitle&&<div>{postsFormik.errors.postTitle}</div>}
+                    <input
+                        {...postsFormik.getFieldProps('postTitle')}
+                    ></input>
+                    <button disabled={!!postsFormik.errors.postTitle} type={'submit'}>Add post
                     </button>
-                </div>
-                <div className={s.posts}>
-                    {profilePage.postsData.length ?
-                        profilePage.postsData.map(post => <Post key={post.id} message={post.message}
-                                                                likesCount={post.likesCount}/>)
-                        : <div>Posts empty</div>}
-                </div>
+                </form>
             </div>
-        )
-    }
+            <div className={s.posts}>
+                {profilePage.postsData.length ?
+                    profilePage.postsData.map(post => <Post key={post.id} message={post.message}
+                                                            likesCount={post.likesCount}/>)
+                    : <div>Posts empty</div>}
+            </div>
+        </div>
+    )
 }
 
 export default MyPosts;

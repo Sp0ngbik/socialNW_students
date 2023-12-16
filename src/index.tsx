@@ -6,18 +6,19 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {reduxStore} from "./data/redux/store";
 import AppContainer from "./AppContainer";
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <BrowserRouter>
             <Provider store={reduxStore}>
                 <AppContainer/>
             </Provider>
         </BrowserRouter>
-    </React.StrictMode>
+     // </React.StrictMode>
 );
 // rerenderEntireThree(store.getData())
 // store.subscribe(rerenderEntireThree)

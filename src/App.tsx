@@ -3,6 +3,7 @@ import './App.css';
 import RoadMap from "./components/Roadmap/RoadMap";
 import {NavbarContainer} from "./components/Navbar/NavbarConainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import Notification from "./utils/Notification/Notification";
 
 class App extends React.Component {
     render() {
@@ -12,6 +13,7 @@ class App extends React.Component {
             <div className='app-wrapper-content'>
                 <RoadMap/>
             </div>
+            <Notification/>
         </div>;
     }
 }
