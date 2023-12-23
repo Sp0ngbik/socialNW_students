@@ -15,6 +15,7 @@ type T_StateUsers = {
 }
 
 class Users extends React.Component<T_UserContainer & T_UsersProps, T_StateUsers> {
+
     constructor(props: T_UserContainer & T_UsersProps) {
         super(props);
         this.state = {
@@ -25,9 +26,9 @@ class Users extends React.Component<T_UserContainer & T_UsersProps, T_StateUsers
     }
 
     render() {
+        console.log('RENDER USER')
         const {users, followTC, unfollowTC, onPageChangeHandler} = this.props
         const pages: number[] = []
-        // const pageCounter = Math.ceil(totalCount / pageSize)
 
         for (let i = this.state.minCurrentPage; i <= this.state.maxCurrentPage; i++) {
             pages.push(i)

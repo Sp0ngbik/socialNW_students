@@ -1,8 +1,11 @@
 import {T_PostsData} from "../data";
+import {AppThunk} from "../redux/store";
+import {Profile_api} from "../../api/profiile_api";
 
 export type T_ProfilePage = {
     profileInfo: T_ProfileInfo | null,
-    postsData: T_PostsData[]
+    postsData: T_PostsData[],
+    status: null | string
 }
 
 export type T_ProfileInfo = {
@@ -14,6 +17,7 @@ export type T_ProfileInfo = {
     userId: number;
     photos: T_ProfilePhoto;
 }
+
 type T_ProfileContacts = {
     facebook: string;
     vk: string;
@@ -27,9 +31,11 @@ type T_ProfilePhoto = {
 }
 
 
+type T_UpdateUserStatus = ReturnType<typeof updateUserStatusAC>
+type T_SetUserStatus = ReturnType<typeof setUserStatusAC>
 type T_SetUserInfo = ReturnType<typeof setUserInfoAC>
 type T_AddPost = ReturnType<typeof addPostAC>
-export type T_MainProfile =   T_SetUserInfo|T_AddPost
+export type T_MainProfile = T_SetUserInfo | T_AddPost | T_SetUserStatus | T_UpdateUserStatus
 
 const initialState: T_ProfilePage = {
     profileInfo: null,
@@ -37,19 +43,25 @@ const initialState: T_ProfilePage = {
         {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
         {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
         {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
-    ]
+    ],
+    status: null
 }
 
 export const profilePageReducer = (state = initialState, action: T_MainProfile) => {
     switch (action.type) {
         case "ADD_POST":
             const newPost = {
-                message:action.title, likesCount: '0', id: crypto.randomUUID()
+                message: action.title, likesCount: '0', id: crypto.randomUUID()
             }
             return {...state, postsData: [newPost, ...state.postsData], newValueForPost: ''}
-
         case "SET_USER_INFO": {
             return {...state, profileInfo: action.userInfo}
+        }
+        case "SET_USER_STATUS": {
+            return {...state, status: action.status}
+        }
+        case "UPDATE_USER_STATUS": {
+            return {...state, status: action.status}
         }
         default:
             return state
@@ -57,10 +69,34 @@ export const profilePageReducer = (state = initialState, action: T_MainProfile) 
 }
 
 
-export const setUserInfoAC = (userInfo: T_ProfileInfo) => {
-    return {type: 'SET_USER_INFO', userInfo} as const
+const setUserStatusAC = (status: string) => {
+    return {type: 'SET_USER_STATUS', status} as const
 }
 
-export const addPostAC = (title:string)=>{
-    return {type:'ADD_POST',title}as const
+const setUserInfoAC = (userInfo: T_ProfileInfo) => {
+    return {type: 'SET_USER_INFO', userInfo} as const
 }
+const updateUserStatusAC = (status: string) => {
+    return {type: 'UPDATE_USER_STATUS', status} as const
+}
+
+
+export const addPostAC = (title: string) => {
+    return {type: 'ADD_POST', title} as const
+}
+
+export const getUserInfoTC = (userId: string): AppThunk => async (dispatch) => {
+    const res = await Profile_api.getUserInfo(userId)
+    dispatch(setUserInfoAC(res.data))
+}
+export const getUserStatusTC = (userId: string): AppThunk => async (dispatch) => {
+    const res = await Profile_api.getUserStatus(userId)
+    dispatch(setUserStatusAC(res.data))
+}
+export const updateStatusTC = (status: string): AppThunk => async (dispatch) => {
+    const res = await Profile_api.updateStatus(status)
+    if (res.data.resultCode === 0) {
+        dispatch(setUserStatusAC(status))
+    }
+}
+

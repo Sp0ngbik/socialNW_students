@@ -1,5 +1,5 @@
 import {AppDispatch} from "../../data/redux/store";
-import {AxiosResponse, isAxiosError} from "axios";
+import {AxiosResponse} from "axios";
 import {setAppInformMessageAC, setAppStatusAC} from "../../data/reducers/app_reducer";
 
 export const localError = (dispatch: AppDispatch, err: AxiosResponse) => {

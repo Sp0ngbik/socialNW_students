@@ -17,7 +17,8 @@ export type T_UsersState = {
     pageSize: number,
     error: string | null,
     activePage: number,
-    isFetching: boolean
+    isFetching: boolean,
+    fake: number,
 }
 
 
@@ -27,7 +28,8 @@ const initialState: T_UsersState = {
     pageSize: 10,
     error: null,
     activePage: 1,
-    isFetching: true
+    isFetching: true,
+    fake: 10
 }
 
 type T_ChangeFollowStatus = ReturnType<typeof followStatusAC>
@@ -35,12 +37,14 @@ type T_ChangeUnfollowStatus = ReturnType<typeof unfollowStatusAC>
 type T_SetServerUsers = ReturnType<typeof setUsersFromServerAC>
 type T_ChangeActivePage = ReturnType<typeof setNewActivePageAC>
 type T_ChangeFetchingStatus = ReturnType<typeof setIsFetchingAC>
+type T_Fake = ReturnType<typeof fakeAC>
 type T_MainUsersAC =
     T_ChangeFollowStatus
     | T_SetServerUsers
     | T_ChangeActivePage
     | T_ChangeFetchingStatus
     | T_ChangeUnfollowStatus
+    | T_Fake
 
 export const usersReducer = (state = initialState, action: T_MainUsersAC): T_UsersState => {
     switch (action.type) {
@@ -63,9 +67,17 @@ export const usersReducer = (state = initialState, action: T_MainUsersAC): T_Use
         case "CHANGE_FETCHING_STATUS": {
             return {...state, isFetching: action.status}
         }
+        case "FAKE_ACTION": {
+            return {...state, fake: state.fake + 1}
+        }
         default:
             return state
     }
+}
+
+
+export const fakeAC = () => {
+    return {type: 'FAKE_ACTION'} as const
 }
 
 

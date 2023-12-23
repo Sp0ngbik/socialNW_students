@@ -11,14 +11,20 @@ import 'react-toastify/dist/ReactToastify.css';
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
+
+// setInterval(() => {
+//     reduxStore.dispatch({type: "FAKE_ACTION"})
+// }, 1000)
+
 root.render(
     // <React.StrictMode>
-        <BrowserRouter>
-            <Provider store={reduxStore}>
-                <AppContainer/>
-            </Provider>
-        </BrowserRouter>
-     // </React.StrictMode>
+    <BrowserRouter>
+        <Provider store={reduxStore}>
+            <AppContainer/>
+        </Provider>
+    </BrowserRouter>
+    // </React.StrictMode>
 );
 // rerenderEntireThree(store.getData())
 // store.subscribe(rerenderEntireThree)

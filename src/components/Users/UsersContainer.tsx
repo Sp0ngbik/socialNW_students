@@ -9,6 +9,13 @@ import {
 } from "../../data/reducers/usersReducer";
 import React from "react";
 import {compose} from "redux";
+import {
+    getActivePage, getFake,
+    getIsFetching,
+    getPageSize, getSuperUsers,
+    getTotalCount,
+    getUsers
+} from "../../data/reducers/selectors/userSelector";
 
 export type T_UserContainer = {
     users: T_UserBody[],
@@ -32,18 +39,22 @@ class SuperUserContainer extends React.Component <T_UserContainer> {
     }
 
     render() {
+        console.log('RENDER')
         return <Users {...this.props}
                       onPageChangeHandler={this.onPageChangeHandler.bind(this)}/>;
     }
 }
 
 const mapStateToProps = (state: RootState) => {
+    console.log('MAP RENDERED')
     return {
-        users: state.usersReducer.items,
-        activePage: state.usersReducer.activePage,
-        pageSize: state.usersReducer.pageSize,
-        totalCount: state.usersReducer.totalCount,
-        isFetching: state.usersReducer.isFetching
+        // users: getUsers(state),
+        users: getSuperUsers(state),
+        activePage: getActivePage(state),
+        pageSize: getPageSize(state),
+        totalCount: getTotalCount(state),
+        isFetching: getIsFetching(state),
+        fake: getFake(state)
     }
 }
 
