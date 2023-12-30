@@ -8,7 +8,7 @@ class Profile extends React.Component {
     render() {
         return (
             <div className={s.content}>
-                <ProfileInfoContainer />
+                <ProfileInfoContainer/>
                 <MyPostsContainer/>
             </div>
         )

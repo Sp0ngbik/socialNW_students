@@ -2,20 +2,20 @@ import {T_DialogsInfo} from "../data";
 
 const initialState: T_DialogsInfo = {
     messageData: [
-        {id: crypto.randomUUID(), userId: '1', messages: 'hi'},
-        {id: crypto.randomUUID(), userId: '1', messages: 'bye'},
-        {id: crypto.randomUUID(), userId: '1', messages: 'welcome'},
-        {id: crypto.randomUUID(), userId: '2', messages: 'again'},
-        {id: crypto.randomUUID(), userId: '2', messages: 'alright'},
-        {id: crypto.randomUUID(), userId: '3', messages: 'welcome'},
-        {id: crypto.randomUUID(), userId: '3', messages: 'again'},
-        {id: crypto.randomUUID(), userId: '4', messages: 'alright'},
-        {id: crypto.randomUUID(), userId: '4', messages: 'welcome'},
-        {id: crypto.randomUUID(), userId: '4', messages: 'again'},
-        {id: crypto.randomUUID(), userId: '5', messages: 'alright'},
-        {id: crypto.randomUUID(), userId: '5', messages: 'welcome'},
-        {id: crypto.randomUUID(), userId: '5', messages: 'again'},
-        {id: crypto.randomUUID(), userId: '5', messages: 'alright'},
+        {id: '1', userId: '1', messages: 'hi'},
+        {id: '2', userId: '1', messages: 'bye'},
+        {id: '3', userId: '1', messages: 'welcome'},
+        {id: '4', userId: '2', messages: 'again'},
+        {id: '5', userId: '2', messages: 'alright'},
+        {id: '6', userId: '3', messages: 'welcome'},
+        {id: '7', userId: '3', messages: 'again'},
+        {id: '8', userId: '4', messages: 'alright'},
+        {id: '9', userId: '4', messages: 'welcome'},
+        {id: '10', userId: '4', messages: 'again'},
+        {id: '11', userId: '5', messages: 'alright'},
+        {id: '12', userId: '5', messages: 'welcome'},
+        {id: '13', userId: '5', messages: 'again'},
+        {id: '14', userId: '5', messages: 'alright'},
     ],
     dialogItems: [
         {id: '1', name: 'Alexey'},
@@ -27,13 +27,13 @@ const initialState: T_DialogsInfo = {
 }
 
 type T_AddNewMessage = ReturnType<typeof addNewMessageAC>
-type T_MainDialogs =T_AddNewMessage
+type T_MainDialogs = T_AddNewMessage
 
 export const dialogsReducer = (state = initialState, action: T_MainDialogs) => {
     switch (action.type) {
         case "ADD_NEW_MESSAGE":
             const newMessage = {
-                id: crypto.randomUUID(),
+                id: state.messageData.length.toString(),
                 userId: '1',
                 messages: action.message
             }
@@ -47,5 +47,5 @@ export const dialogsReducer = (state = initialState, action: T_MainDialogs) => {
 
 
 export const addNewMessageAC = (message: string) => {
-    return {type: "ADD_NEW_MESSAGE",message} as const
+    return {type: "ADD_NEW_MESSAGE", message} as const
 }

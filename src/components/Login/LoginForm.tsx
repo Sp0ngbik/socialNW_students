@@ -33,7 +33,7 @@ const LoginForm: React.FC<T_LoginContainer> = ({setUserLoginTC, isAuth, userId =
     return (
         <div>
             <form onSubmit={loginFormik.handleSubmit}>
-                <div>
+                <div >
                     {loginFormik.errors.email && loginFormik.touched.email && <div>{loginFormik.errors.email}</div>}
                     <input placeholder={'Email'} type='email' {...loginFormik.getFieldProps('email')}/>
                 </div>

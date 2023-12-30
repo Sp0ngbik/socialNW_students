@@ -40,9 +40,9 @@ export type T_MainProfile = T_SetUserInfo | T_AddPost | T_SetUserStatus | T_Upda
 const initialState: T_ProfilePage = {
     profileInfo: null,
     postsData: [
-        {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
-        {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
-        {message: 'title message', likesCount: '5', id: crypto.randomUUID()},
+        {message: 'title message', likesCount: '5', id: '1'},
+        {message: 'title message', likesCount: '5', id: '2'},
+        {message: 'title message', likesCount: '5', id: '3'},
     ],
     status: null
 }
@@ -51,7 +51,7 @@ export const profilePageReducer = (state = initialState, action: T_MainProfile) 
     switch (action.type) {
         case "ADD_POST":
             const newPost = {
-                message: action.title, likesCount: '0', id: crypto.randomUUID()
+                message: action.title, likesCount: '0', id: state.postsData.length.toString()
             }
             return {...state, postsData: [newPost, ...state.postsData], newValueForPost: ''}
         case "SET_USER_INFO": {

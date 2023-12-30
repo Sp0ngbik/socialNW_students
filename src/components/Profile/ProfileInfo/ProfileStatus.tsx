@@ -21,10 +21,6 @@ export class ProfileStatus extends React.Component<T_ProfileStatus, { editMode: 
         }
     }
 
-
-
-
-
     onActivateEditMode() {
         this.setState({editMode: true})
     }
