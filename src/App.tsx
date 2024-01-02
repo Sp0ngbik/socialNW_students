@@ -8,6 +8,7 @@ import {NavbarContainer} from "./components/Navbar/NavbarConainer";
 import RoadMap from "./components/Roadmap/RoadMap";
 import Notification from "./utils/Notification/Notification";
 import {BrowserRouter} from "react-router-dom";
+import './App.css'
 
 type T_AppContainer = {
     isInitialized: boolean,
@@ -24,14 +25,12 @@ class App extends React.Component<T_AppContainer> {
             return <Preloader/>
         }
         return <div className='app-wrapper'>
-            <div>
                 <HeaderContainer/>
                 <NavbarContainer/>
                 <div className='app-wrapper-content'>
                     <RoadMap/>
                 </div>
                 <Notification/>
-            </div>
         </div>
     }
 }
